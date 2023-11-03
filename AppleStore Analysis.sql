@@ -106,4 +106,19 @@ SELECT
     track_name,
     user_rating
 FROM RankedApps
-WHERE ranking = 1;
+WHERE ranking = 1
+
+--Checking if availablity to more devices affects ratings 
+SELECT min(sup_devices_num), max(sup_devices_num), avg(sup_devices_num)
+FROM AppleStore
+
+SELECT CASE 
+ 			WHEN sup_devices_num < 20 THEN 'less than 20 supported devices'
+            WHEN sup_devices_num BETWEEN 20 AND 30 THEN 'between 20 and 30 supported devices'
+            ELSE 'over 30 supported devices'
+       END AS supported_devices,
+       avg(user_rating) as AVG_Rating
+FROM AppleStore
+GROUP BY supported_devices
+ORDER BY AVG_Rating desc
+
